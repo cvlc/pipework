@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 set -e
 
 case "$1" in
@@ -131,7 +131,8 @@ ip netns exec $NSPID ip link set $GUEST_IFNAME name eth1
 [ "$MACADDR" ] && ip netns exec $NSPID ip link set eth1 address $MACADDR
 if [ "$IPADDR" = "dhcp" ]
 then
-    ip netns exec $NSPID udhcpc -qi eth1
+    ip netns exec $NSPID ip link set eth1 up
+    ip netns exec $NSPID dhclient -6 eth1
 else
     ip netns exec $NSPID ip addr add $IPADDR dev eth1
     ip netns exec $NSPID ip link set eth1 up
