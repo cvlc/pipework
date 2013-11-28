@@ -14,6 +14,7 @@ IFNAME=$1
 GUESTNAME=$2
 IPADDR=$3
 MACADDR=$4
+[ -c "$( tty )" ] || { STDIN=$(</dev/stdin); }
 
 [ "$IPADDR" ] || {
     echo "Syntax:"
@@ -140,3 +141,5 @@ else
 	ip netns exec $NSPID ip route replace default via $GATEWAY
     }
 fi
+
+if `echo "$STDIN" | grep -q "iptables-save"`; then { ip netns exec $NSPID iptables-restore <<< "$STDIN"; } elif `echo "$STDIN" | grep -q "ip6tables-save"`; then { ip netns exec $NSPID ip6tables-restore <<< "$STDIN"; } fi
