@@ -184,14 +184,14 @@ any remote access services or allow public access to a container. You can now
 use iptables rules with pipework! Start by exporting your host's firewall to 
 a file:
 
-   iptables-save > ipv4-firewall
+    iptables-save > ipv4-firewall
 
 Make a copy of the ipv4-firewall file and edit it according to your service
 requirements. Don't remove the comments, we need those to identify the file as 
 an iptables ruleset. Once you're finished, simply provide the file through stdin
 when you launch pipework:
 
-  pipework eth0 $(docker run -d hadoop) 10.4.138.1/20 < hadoop-firewall
+    pipework eth0 $(docker run -d hadoop) 10.4.138.1/20 < hadoop-firewall
 
 Note that ip6tables rules will work, too (though you can't currently use both 
 concurrently).
